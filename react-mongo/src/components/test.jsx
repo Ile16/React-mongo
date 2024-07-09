@@ -7,7 +7,7 @@ const [newUser, setNewUser] = useState({name:'', email:'', role:'user' });
     useEffect(() => {
         fetch("http://localhost:5001/api/users")
         .then(response => response.json())
-        .then(data => setUser(data))
+        .then(data => setUser(data.users)) //gli utenti sono all'interno di una chiave nel db che sarebbe users
         .catch(error => console.error(error))
     },[]); //chiamata degli elementi in db solo al montaggio e quindi solo una volta
     
@@ -41,7 +41,7 @@ const deleteUser = (id) => {
 
     return (
         <>
-        <h1>Hello world</h1>
+        <h1>Gestione degli utenti</h1>
         <ul>
             {
                 user.map((singleUsers) => (
