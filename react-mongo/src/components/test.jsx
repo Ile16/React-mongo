@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 function Test(){
 const [currentPage, setCurrentPage] = useState(1);
-const [totalPages, setTotalPages] = useState(1);
-const [limit, setLimit] = useState(3);
+const [totalPages, setTotalPages] = useState(1); //in base agli elementi inseriti le pagine aumenteranno
+const [limit, setLimit] = useState(5);//il limite degli elementi visibili 
 const [user, setUser] = useState([]);
 const [newUser, setNewUser] = useState({name:'', email:'', role:'user' });
 
@@ -15,7 +15,7 @@ const [newUser, setNewUser] = useState({name:'', email:'', role:'user' });
             setTotalPages(data.totalPages)
         }) //gli utenti sono all'interno di una chiave nel db che sarebbe users
         .catch(error => console.error(error))
-    },[]); //chiamata degli elementi in db solo al montaggio e quindi solo una volta
+    },[currentPage, limit]); //chiamata degli elementi in db solo al montaggio e quindi solo una volta
     
 
     const postUser = (e) => {
@@ -60,19 +60,15 @@ const deleteUser = (id) => {
             <button type="submit">Crea</button>
         </form>
 
-        <button>
-            Back
-        </button>
-        <span>
-            {currentPage}/{totalPages}
-        </span>
-        <button>
-            Next
-        </button>
-        <select name="" id="" value={limit} onChange={(e) => setLimit(Number(e.target.value))}/>
-        <option value={5}></option>
-        <option value={10}></option>
-        <option value={20}></option>
+        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Back</button>
+        <span>{currentPage} / {totalPages}</span>
+        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+    
+        <select name="" id="" value={limit} onChange={(e) => setLimit(Number(e.target.value))}> 
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+        </select>
         <ul>
             {
                 user.map((singleUsers) => (
